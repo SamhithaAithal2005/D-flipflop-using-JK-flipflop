@@ -1,0 +1,39 @@
+`timescale 1ns/1ps
+
+module tb_d_ff_using_jk;
+
+reg clk;
+reg d;
+wire q;
+
+// Instantiate the DUT (Device Under Test)
+d_ff_using_jk uut (
+    .clk(clk),
+    .d(d),
+    .q(q)
+);
+
+// Clock generation (10 ns period)
+always #5 clk = ~clk;
+
+initial begin
+    // Initialize signals
+    clk = 0;
+    d = 0;
+
+    // Monitor values
+    $monitor("Time = %0t | clk = %b | d = %b | q = %b", $time, clk, d, q);
+
+    // Apply test vectors
+    #10 d = 1;
+    #10 d = 0;
+    #10 d = 1;
+    #10 d = 1;
+    #10 d = 0;
+    #10 d = 0;
+    #10 d = 1;
+
+    #20 $finish;
+end
+
+endmodule
